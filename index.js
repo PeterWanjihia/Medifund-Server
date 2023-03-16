@@ -1,14 +1,12 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const cors = require("cors");
 
 const stripe = require("stripe")(process.env.SECRET_KEY);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(cors());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000/");
@@ -19,7 +17,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.post("/payment", cors(), async (req, res) => {
+app.post("/payment", async (req, res) => {
   let { amount, id } = req.body;
   try {
     const payment = await stripe.paymentIntents.create({
